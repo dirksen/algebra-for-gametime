@@ -1,0 +1,35 @@
+body {
+  /* want to fix the height to the window height */
+  height: calc(var(--window-inner-height) - 1px);
+  /* want to block all overflowing content */
+  overflow: hidden;
+  /* want to exclude padding from the height */
+  box-sizing: border-box;
+  text-align: center;
+}
+
+article {
+  width: 20rem;
+  margin: 2rem auto !important;
+}
+
+@media screen and (max-width:480px) {
+  article {
+    width: 100%;
+  }
+}
+
+button {
+  width: 50%;
+}
+
+.incorrect {
+  box-shadow: rgb(162 34 34 / 58%) 10px 10px 42px 0px;
+}
+
+.picker-container .picker-column .picker-item {
+    color: #736b5e;
+}
+article .picker-container .picker-column .picker-item.picker-item-selected {
+    color: white;
+}
