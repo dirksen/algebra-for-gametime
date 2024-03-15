@@ -7,3 +7,7 @@ The quiz will generate 5 questions by default. You can change the number of ques
 ## How to verify the result
 
 At the end of the game, the kids will enter their parents phone number, and the result will be sent to the parents via SMS text for review.
+
+## Credit
+
+It uses an excellent library https://algebra.js.org/.
