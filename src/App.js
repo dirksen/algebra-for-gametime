@@ -7,6 +7,7 @@ import Confetti from 'react-confetti';
 
 const params = new URLSearchParams(window.location.search);
 const leng = Number(params.get('leng') || 5);
+const lastQuizTimeStamp = Number(params.get('ts'))
 const questions = _.range(leng).map(genQuiz);
 const genOptions = (ops) =>
   ops.map((x) => ({ value: x, label: x }));
@@ -26,8 +27,9 @@ const initAnswer = {
 const records = [];
 
 function reportHref(records, phone) {
-  records = records.join('\r')
-  return `sms://${phone}?body=${encodeURIComponent(records)}`
+  const now = (new Date()).getTime()
+  const verificationURL = '${location}?ts=${now}'
+  return `sms://${phone}?body=${encodeURIComponent(verificationURL)}`
 }
 
 export default function App() {
@@ -61,7 +63,9 @@ export default function App() {
   return (
     <form id="quiz" onSubmit={checkAnswer}>
       <div>
-        {currentQuestion >= questions.length ? (
+        {(lastQuizTimeStamp &&
+          <h1>Last finished time: {(new Date(Number(lastQuizTimeStamp))).toLocaleString()}</h1>)
+        || (currentQuestion >= questions.length &&
           <div>
             <Confetti recycle={showerConfetti}/>
             <h1 className='notice'>You scored {score} out of {questions.length}</h1>
@@ -69,8 +73,8 @@ export default function App() {
               <input value={phone} onChange={e=>setPhone(e.target.value)} type='text' placeholder='000-000-0000'/>
             </label>
             <a href={reportHref(records, phone)} className="button">Report</a>
-          </div>
-        ) : (
+          </div>)
+        || (
           <>
             <Confetti recycle={correct} />
             <article
