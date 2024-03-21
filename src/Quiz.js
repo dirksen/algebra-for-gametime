@@ -25,15 +25,6 @@ function dropLeadingPlus(equation) {
   return equation;
 }
 
-function print(question) {
-  console.log(question.toString(), '\t', question.solution);
-}
-// console.log(dropLeadingPlus('+x'))
-// console.log(dropLeadingPlus('-0+x'))
-// console.log(dropLeadingPlus('-0+x>= +9'))
-// console.log(dropLeadingPlus('-0+x>= -0'))
-// console.log()
-
 function flip(comparator) {
   switch (true) {
     case comparator === '<':
@@ -56,14 +47,4 @@ function solve(question) {
   const comparator = (positiveXonRight || negativeXonLeft) ? flip(question.comparator) : question.comparator;
   return `${comparator}${xVal}`
 }
-
-_.range(10).map(genQuiz).forEach(print);
-
-// print(solve({equation:'1+x=3', comparator: '>'}))
-// print(solve({equation:'5=1-x', comparator: '>'}))
-// console.log('---')
-// print(solve({equation:'1-x=3', comparator: '>'}))
-// print(solve({equation:'-x+1=3', comparator: '>'}))
-// print(solve({equation:'5=1+x', comparator: '>'}))
-// print(solve({equation:'5=x-1', comparator: '>'}))
 
