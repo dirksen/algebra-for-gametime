@@ -31,7 +31,7 @@ export default function App() {
     const val = e.target.innerText;
     const comparatorRegex = new RegExp("[=<>≤≥]");
     switch (true) {
-      case val === 'Check':
+      case val === "Check":
         setCorrect(answer === questions[currentQuestion].solution);
         break;
       case val === "+/-":
@@ -75,7 +75,7 @@ export default function App() {
           setShowerConfetti(false);
         }, 30000);
     }
-  }, [correct, currentQuestion, score]);
+  }, [answer, correct, currentQuestion, score]);
 
   return (
     <form id="quiz">
@@ -114,21 +114,21 @@ export default function App() {
                 {numpad.map((row, rowIdx) =>
                   row.map((key, colIdx) => {
                     if (key !== "_") {
-                      let className = ''
-                      let inputType = ''
+                      let className = "";
+                      let inputType = "";
                       switch (key) {
-                        case 'Check':
-                          colIdx = `${colIdx + 1}/${colIdx + 3}`
-                          className = "btn-check"
-                          inputType = 'submit'
-                          break
-                        case 'C':
-                          className = 'btn-clear'
-                          colIdx += 1
-                          break
+                        case "Check":
+                          colIdx = `${colIdx + 1}/${colIdx + 3}`;
+                          className = "btn-check";
+                          inputType = "submit";
+                          break;
+                        case "C":
+                          className = "btn-clear";
+                          colIdx += 1;
+                          break;
                         default:
-                          colIdx += 1
-                          break
+                          colIdx += 1;
+                          break;
                       }
                       return (
                         <button
@@ -141,6 +141,8 @@ export default function App() {
                           {key}
                         </button>
                       );
+                    } else {
+                      retrurn;
                     }
                   }),
                 )}
