@@ -45,6 +45,6 @@ function solve(question) {
   const positiveXonRight = /=x|=.\+x/.test(question.equation)
   const negativeXonLeft = /-x.*=/.test(question.equation)
   const comparator = (positiveXonRight || negativeXonLeft) ? flip(question.comparator) : question.comparator;
-  return `${comparator}${xVal}`
+  return `x${comparator}${xVal}`
 }
 

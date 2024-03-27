@@ -1,3 +1,21 @@
+:root {
+  --bg-color: hsla(215, 85%, 20%, 1);
+  --display-color: hsla(215, 85%, 60%, 1);
+  --off-white: hsla(215, 85%, 95%, 1);
+  --light-green: hsla(130, 90%, 65%, 1);
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Open Sans";
+  color: var(--dark-bg-color);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none; /* Webkit */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE 10  */
+  border-radius: 3px;
+}
+
 body {
   /* want to fix the height to the window height */
   height: calc(var(--window-inner-height) - 1px);
@@ -6,21 +24,26 @@ body {
   /* want to exclude padding from the height */
   box-sizing: border-box;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-width: 100vw;
 }
 
 article {
-  width: 20rem;
-  margin: 2rem auto !important;
+  margin: 0 !important;
 }
 
-@media screen and (max-width:480px) {
+@media screen and (max-width: 480px) {
   article {
     width: 100%;
   }
 }
 
-button {
-  width: 50%;
+.question {
+  letter-spacing: 1rem;
+  margin: 0.5rem;
 }
 
 .incorrect {
@@ -28,8 +51,77 @@ button {
 }
 
 .picker-container .picker-column .picker-item {
-    color: #736b5e;
+  color: #736b5e;
 }
 article .picker-container .picker-column .picker-item.picker-item-selected {
-    color: white;
+  color: white;
 }
+
+.numpad-body {
+  display: grid;
+  grid-template: 1.5fr 1fr 1fr 1fr 1fr 1fr / 1fr 1fr 1fr 1fr;
+  grid-gap: 5px;
+  max-height: 400px;
+  max-width: 450px;
+  padding: 17px;
+  box-shadow: 0px 0px 4px 4px hsla(215, 85%, 5%, 1);
+  border: 1px solid var(--off-white);
+  background: hsla(218, 85%, 10%, 1);
+}
+
+.answer-input {
+  grid-row: 1;
+  grid-column: 1 / 5;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap-reverse;
+  padding-right: 10px;
+  padding-left: 10px;
+  color: var(--off-white);
+  overflow: hidden;
+  background-color: var(--display-color);
+  border: 1px solid var(--off-white);
+}
+
+/**** Buttons ****/
+button,
+button:hover {
+  background-color: var(--off-white)!important;
+  font-size: 2rem;
+  border: none;
+  color: var(--bg-color);
+  text-decoration: none;
+}
+
+button,
+button:focus,
+button:active {
+  outline: none;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+button:active {
+  background-color: var(--light-green) !important;
+}
+
+.btn-check,
+.btn-check:hover {
+  background-color: var(--light-green) !important;
+}
+
+.btn-check:active {
+  background: hsla(135, 90%, 60%, 1);
+}
+
+.btn-clear,
+.btn-clear:hover {
+  background: hsla(1, 75%, 60%, 1) !important;
+  color: var(--off-white);
+}
+
+.btn-clear:active {
+  background: hsla(1, 75%, 50%, 1);
+}
+
