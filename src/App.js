@@ -9,7 +9,7 @@ const leng = Number(params.get("leng") || 5);
 const questions = _.range(leng).map(genQuiz);
 const records = [];
 const numpad = `
-C ⌫ +/- =
+C ⌫ +/- /
 7 8 9 <
 4 5 6 >
 1 2 3 ≤
@@ -44,6 +44,10 @@ export default function App() {
         break;
       case val === "C":
         setAnswer("x");
+        break;
+      case val === "/":
+        if (/\d$/.test(answer))
+          setAnswer(answer + val);
         break;
       case /[0-9]/.test(val) && !comparatorRegex.test(answer):
         // No comparator yet, prevent number input

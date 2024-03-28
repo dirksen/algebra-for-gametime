@@ -2,49 +2,54 @@ import _ from "lodash";
 import algebra from "algebra.js";
 
 export default function genQuiz() {
-  const n1 = _.random(1, 9);
-  const n2 = _.random(1, 9);
-  const members = _.shuffle(["x", n1, n2]);
-  const ops = _.map(_.range(3), (x) => (_.random(1) ? "+" : "-"));
-  let equation = _.zip(ops, members);
-  equation.splice(_.random(1, 2), 0, "=");
-  equation = _.flattenDeep(equation).join("").trim();
-  equation = dropLeadingPlus(equation);
+  const one2nine = _.range(1, 10)
+  const randomlyFlipToNegative = one2nine.map(n => Math.random()>0.5?n*-1 : n)
+  const shuffled = _.shuffle(randomlyFlipToNegative)
+  const [n1, n2, n3] = shuffled.splice(0, 3);
+  const candidates = _.shuffle( [
+      `${n1}+${n2}x=${n3}x`,
+      `${n1}x=${n2}+${n3}x`,
+      `${n1}x+${n2}=${n3}x`,
+      `${n1}x=${n2}x+${n3}`,
+    ])
+  const firstOne = candidates[0]
+  const formula = firstOne.replace(/\+-/, '-').replace(/1x/, 'x');
   const question = {
-    equation,
+    formula,
     comparator: _.sample(["<", ">", "≤", "≥"]),
   };
-  question.toString = () => question.equation.replace(/=/, question.comparator)
-  question.solution = solve(question)
+  question.toString = () => question.formula.replace(/=/, question.comparator);
+  question.solution = solve(question);
+  console.log(question)
   return question;
 }
 
-function dropLeadingPlus(equation) {
-  equation = equation.replace(/^\+/, "");
-  equation = equation.replace(/([<>=≤≥])\+/, "$1");
-  return equation;
-}
-
 function flip(comparator) {
-  switch (true) {
-    case comparator === '<':
-      return '>';
-    case comparator === '>':
-      return '<';
-    case comparator === '≤':
-      return '≥';
-    case comparator === '≥':
-      return '≤';
+  switch (comparator) {
+    case "<":
+      return ">";
+    case ">":
+      return "<";
+    case "≤":
+      return "≥";
+    case "≥":
+      return "≤";
     default:
-      return
+      return comparator;
   }
 }
 
 function solve(question) {
-  const xVal = algebra.parse(question.equation).solveFor('x').toString()
-  const positiveXonRight = /=x|=.\+x/.test(question.equation)
-  const negativeXonLeft = /-x.*=/.test(question.equation)
-  const comparator = (positiveXonRight || negativeXonLeft) ? flip(question.comparator) : question.comparator;
-  return `x${comparator}${xVal}`
+  const formula = algebra.parse(question.formula);
+  let lhsCoeff = formula.lhs.terms[0].coefficients[0]
+  lhsCoeff = lhsCoeff.numer / lhsCoeff.denom
+  let rhsCoeff = formula.rhs.terms[0].coefficients[0]
+  rhsCoeff = rhsCoeff.numer / rhsCoeff.denom
+  const comparator =
+    lhsCoeff < rhsCoeff
+      ? flip(question.comparator)
+      : question.comparator;
+  const solution = formula.solveFor("x").toString();
+  return `x${comparator}${solution}`;
 }
 
