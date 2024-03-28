@@ -46,8 +46,7 @@ export default function App() {
         setAnswer("x");
         break;
       case val === "/":
-        if (/\d$/.test(answer))
-          setAnswer(answer + val);
+        if (/\d$/.test(answer)) setAnswer(answer + val);
         break;
       case /[0-9]/.test(val) && !comparatorRegex.test(answer):
         // No comparator yet, prevent number input
@@ -66,13 +65,15 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (correct) {
+    if (correct != null) {
       document.getElementById("quiz").reset();
       const nextQuestion = currentQuestion + 1;
-      records.push(`${questions[currentQuestion].toString()} (${answer})`);
+      records.push(
+        `${questions[currentQuestion].toString()} (${answer}) ${correct ? "✅︎" : "❌"}`,
+      );
       setAnswer("x");
       setCorrect(null);
-      setScore(score + 1);
+      if (correct) setScore(score + 1);
       setCurrentQuestion(nextQuestion);
       if (nextQuestion >= questions.length)
         setTimeout(() => {
@@ -86,7 +87,9 @@ export default function App() {
       <div>
         {(currentQuestion >= questions.length && (
           <div>
-            <Confetti recycle={showerConfetti} />
+            {score > questions.length / 2 && (
+              <Confetti recycle={showerConfetti} />
+            )}
             <h1 className="notice">
               You scored {score} out of {questions.length}
             </h1>

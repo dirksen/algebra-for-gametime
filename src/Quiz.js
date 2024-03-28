@@ -20,7 +20,6 @@ export default function genQuiz() {
   };
   question.toString = () => question.formula.replace(/=/, question.comparator);
   question.solution = solve(question);
-  console.log(question)
   return question;
 }
 
