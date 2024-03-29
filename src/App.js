@@ -21,6 +21,7 @@ Check _ 0 ≥
 
 export default function App() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [attempts, setAttempts] = useState(3);
   const [correct, setCorrect] = useState(null);
   const [score, setScore] = useState(0);
   const [answer, setAnswer] = useState("x");
@@ -66,21 +67,30 @@ export default function App() {
 
   useEffect(() => {
     if (correct != null) {
-      document.getElementById("quiz").reset();
-      const nextQuestion = currentQuestion + 1;
-      records.push(
-        `${questions[currentQuestion].toString()} (${answer}) ${correct ? "✅︎" : "❌"}`,
-      );
-      setAnswer("x");
-      setCorrect(null);
-      if (correct) setScore(score + 1);
-      setCurrentQuestion(nextQuestion);
-      if (nextQuestion >= questions.length)
-        setTimeout(() => {
-          setShowerConfetti(false);
-        }, 30000);
+      if (!correct && attempts > 0) {
+        setAttempts(attempts - 1)
+        setCorrect(null);
+      } else {
+        if (correct){
+          setScore(score + 1);
+        }
+        document.getElementById("quiz").reset();
+        const nextQuestion = currentQuestion + 1;
+        setCurrentQuestion(nextQuestion);
+        const rslt = ( correct ? `(${answer}✅︎)` : `(${answer}❌ ... ${questions[currentQuestion].solution})` )
+        records.push(
+          `${questions[currentQuestion].toString()} | ${rslt}`,
+        );
+        setAnswer("x");
+        setAttempts(3);
+        setCorrect(null);
+        if (nextQuestion >= questions.length)
+          setTimeout(() => {
+            setShowerConfetti(false);
+          }, 30000);
+      }
     }
-  }, [answer, correct, currentQuestion, score]);
+  }, [answer, correct, currentQuestion, score, attempts]);
 
   return (
     <form id="quiz">
