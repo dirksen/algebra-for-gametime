@@ -26,11 +26,8 @@ export default function genQuiz() {
 }
 
 function divide(numerator, denominator) {
-  if (!denominator) {
-    return new Nothing();
-  }
-
-  return new Just(numerator / denominator);
+  const rslt = numerator / denominator
+  return isNaN(rslt) ? 0 : rslt
 }
 
 function flip(comparator) {
@@ -51,9 +48,9 @@ function flip(comparator) {
 function solve(question) {
   const formula = algebra.parse(question.formula);
   let lhsCoeff = formula.lhs.terms[0]?.coefficients[0];
-  lhsCoeff = Maybe.withDefault(0, divide(lhsCoeff?.numer, lhsCoeff?.denom));
+  lhsCoeff = divide(lhsCoeff?.numer, lhsCoeff?.denom);
   let rhsCoeff = formula.rhs.terms[0]?.coefficients[0];
-  rhsCoeff = Maybe.withDefault(0, divide(rhsCoeff?.numer, rhsCoeff?.denom));
+  rhsCoeff = divide(rhsCoeff?.numer, rhsCoeff?.denom);
   const comparator =
     lhsCoeff < rhsCoeff ? flip(question.comparator) : question.comparator;
   const solution = formula.solveFor("x").toString();
@@ -65,34 +62,3 @@ function solve(question) {
 //   comparator: "<",
 // };
 // console.assert(solve(test) == "x>9/2");
-
-// from: https://dev.to/aminnairi/the-maybe-data-type-in-javascript-3bj8
-class Maybe {
-  static withDefault(value, maybe) {
-    if (maybe instanceof Just) {
-      return maybe.getValue();
-    }
-
-    if (maybe instanceof Nothing) {
-      return value;
-    }
-
-    throw new TypeError("second argument is not an instance of Maybe");
-  }
-}
-
-class Just extends Maybe {
-  constructor(value) {
-    super();
-
-    this.value = value;
-  }
-
-  getValue() {
-    return this.value;
-  }
-}
-
-class Nothing extends Maybe {
-}
-
