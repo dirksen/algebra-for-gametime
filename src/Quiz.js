@@ -3,7 +3,7 @@ import algebra from "algebra.js";
 
 export default function genQuiz() {
   const plusMinus = _.random(1) ? '':'-';
-  const nums = '1/2 1/3 2/3 1/4 3/4 1/5 3/5 4/5 1/6 5/6 1/8 3/8 5/8 7/8'.split(' ')
+  const nums = '1/2 1/3 2/3 1/4 3/4 1/5 3/5 4/5 1/6 5/6 1/8 3/8'.split(' ')
   const randomlyFlipToNegative = nums.map((n) =>
     _.random(1) > 0 ? `-${n}` : n,
   );
