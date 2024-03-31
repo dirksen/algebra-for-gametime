@@ -106,7 +106,7 @@ export default function App() {
             <article>
               <b>Here are the questions you have done:</b>
               {records.map((entry, idx) => (
-                <p key={idx}>{entry}</p>
+                <p key={idx} dangerouslySetInnerHTML={{__html:entry}}></p>
               ))}
               <hr />
               <p>{new Date().toLocaleTimeString()}</p>
@@ -121,8 +121,7 @@ export default function App() {
               <div>
                 <span>Question {currentQuestion + 1}</span>/{questions.length}
               </div>
-              <h2 className="question">
-                {questions[currentQuestion].toString()}
+              <h2 className="question" dangerouslySetInnerHTML={{__html:questions[currentQuestion].toString()}}>
               </h2>
               <div className={"numpad-body"}>
                 <div id="answer-input" className={"answer-input"}>
