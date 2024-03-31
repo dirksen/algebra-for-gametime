@@ -2,25 +2,30 @@ import _ from "lodash";
 import algebra from "algebra.js";
 
 export default function genQuiz() {
-  const one2nine = _.range(1, 10);
-  const randomlyFlipToNegative = one2nine.map((n) =>
+  const plusMinus = _.random(1) ? '':'-';
+  const nums = _.range(1, 6);
+  const randomlyFlipToNegative = nums.map((n) =>
     Math.random() > 0.5 ? n * -1 : n,
   );
   const shuffled = _.shuffle(randomlyFlipToNegative);
-  const [n1, n2, n3] = shuffled.splice(0, 3);
-  const candidates = _.shuffle([
-    `${n1}+${n2}x=${n3}`,
-    `${n1}x+${n2}=${n3}`,
-    `${n1}=${n2}x+${n3}`,
-    `${n1}=${n2}+${n3}x`,
+  const [n1, n2, n3, n4] = shuffled.splice(0, 4);
+  const templates = _.shuffle([
+    `${plusMinus}x+${n1}/${n2}=${n3}/${n4}`,
+    `${plusMinus}x+${n1}/${n2}=${n3}/${n4}`,
+    `${n1}/${n2}+${plusMinus}x=${n3}/${n4}`,
+    `${n1}/${n2}=${plusMinus}x+${n3}/${n4}`,
+    `${n1}/${n2}=${n3}/${n4}+${plusMinus}x`,
   ]);
-  const firstOne = candidates[0];
-  const formula = firstOne.replace(/\+-/, "-").replace(/1x/, "x");
+  const firstOne = templates[0];
+  const formula = firstOne.replace(/\+-/g, "-")
+    .replace(/\/-/g, "/")
+    .replace(/\/1/g, "")
+    .replace(/1x/g, "x");
   const question = {
     formula,
     comparator: _.sample(["<", ">", "≤", "≥"]),
   };
-  question.toString = () => question.formula.replace(/=/, question.comparator);
+  question.toString = () => question.formula.replace(/=/g, question.comparator);
   question.solution = solve(question);
   return question;
 }
