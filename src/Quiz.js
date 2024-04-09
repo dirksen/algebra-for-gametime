@@ -20,7 +20,8 @@ export default function genQuiz() {
     formula,
     comparator: _.sample(["<", ">", "≤", "≥"]),
   };
-  question.toString = () => question.formula.replace(/=/g, question.comparator).replace(/(\d)\/(\d)/g, '&frac$1$2;');
+  const htmlizedComparator = question.comparator.replace('<', '&lt;').replace('>', '&gt;')
+  question.toString = () => question.formula.replace(/=/g, htmlizedComparator).replace(/(\d)\/(\d)/g, '&frac$1$2;');
   question.solution = solve(question);
   return question;
 }
